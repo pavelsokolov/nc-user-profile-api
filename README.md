@@ -80,6 +80,20 @@ curl http://localhost:8080/health
 pnpm test
 ```
 
+### Integration tests
+
+Integration tests run against Firebase emulators (Auth + Firestore). Start emulators first:
+
+```bash
+docker compose up firebase-emulators
+```
+
+Then in another terminal:
+
+```bash
+pnpm test:integration
+```
+
 ## API endpoints
 
 | Method | Path       | Auth     | Description              |
