@@ -25,9 +25,11 @@ pnpm dev
 
 The server starts at `http://localhost:8080`.
 
-### Run with Docker Compose (both services)
+### Local dev with Firebase emulators
 
-See the `docker-compose.yml` in this repo. It starts both the API and the frontend together. Both repos must be cloned as siblings:
+The easiest way to develop locally without a real Firebase project. Docker Compose starts Firebase Auth + Firestore emulators automatically.
+
+Both repos must be cloned as siblings:
 
 ```
 parent/
@@ -35,16 +37,17 @@ parent/
   nc-user-profile-web/
 ```
 
-Create a `.env` file in this repo (see `.env.example`), then:
-
 ```bash
 docker compose up --build
 ```
 
 - API: `http://localhost:8080`
 - Frontend: `http://localhost:3000`
+- Emulator UI: `http://localhost:4000`
 
-The compose setup mounts your local GCP credentials into the API container automatically.
+No `.env` file or GCP credentials needed — the compose setup uses `demo-project` values and connects to emulators automatically.
+
+To use emulators with standalone `pnpm dev`, uncomment the emulator env vars in `.env` (see `.env.example`).
 
 ### Run API standalone with Docker
 
