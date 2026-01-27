@@ -11,7 +11,7 @@ export async function getProfileHandler(
     const profile = await getProfile(req.phoneNumber!);
     res.status(200).json(profile);
   } catch {
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ message: 'Internal server error' });
   }
 }
 
@@ -22,12 +22,12 @@ export async function postProfileHandler(
   const { name, email } = req.body;
 
   if (!name || typeof name !== 'string' || name.trim().length === 0) {
-    res.status(400).json({ error: 'Name must be a non-empty string' });
+    res.status(400).json({ message: 'Name must be a non-empty string' });
     return;
   }
 
   if (name.length > NAME_MAX_LENGTH) {
-    res.status(400).json({ error: `Name must not exceed ${NAME_MAX_LENGTH} characters` });
+    res.status(400).json({ message: `Name must not exceed ${NAME_MAX_LENGTH} characters` });
     return;
   }
 
@@ -36,12 +36,12 @@ export async function postProfileHandler(
     typeof email !== 'string' ||
     !EMAIL_REGEX.test(email)
   ) {
-    res.status(400).json({ error: 'Email must be a valid email address' });
+    res.status(400).json({ message: 'Email must be a valid email address' });
     return;
   }
 
   if (email.length > EMAIL_MAX_LENGTH) {
-    res.status(400).json({ error: `Email must not exceed ${EMAIL_MAX_LENGTH} characters` });
+    res.status(400).json({ message: `Email must not exceed ${EMAIL_MAX_LENGTH} characters` });
     return;
   }
 
@@ -54,6 +54,6 @@ export async function postProfileHandler(
     const saved = await upsertProfile(profile);
     res.status(200).json(saved);
   } catch {
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ message: 'Internal server error' });
   }
 }

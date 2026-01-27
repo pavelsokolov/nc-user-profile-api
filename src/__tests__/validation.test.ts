@@ -74,7 +74,7 @@ describe('POST /profile validation', () => {
     const { req, res } = mockReqRes({ name: 'John', email: 'john@example.com' });
     await postProfileHandler(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Internal server error' });
+    expect(res.json).toHaveBeenCalledWith({ message: 'Internal server error' });
   });
 });
 
@@ -104,6 +104,6 @@ describe('GET /profile controller', () => {
     } as unknown as Response;
     await getProfileHandler(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Internal server error' });
+    expect(res.json).toHaveBeenCalledWith({ message: 'Internal server error' });
   });
 });

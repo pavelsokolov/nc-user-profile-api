@@ -12,20 +12,20 @@ export async function authMiddleware(
 ): Promise<void> {
   const header = req.headers.authorization;
   if (!header || !header.startsWith('Bearer ')) {
-    res.status(401).json({ error: 'Missing or invalid Authorization header' });
+    res.status(401).json({ message: 'Missing or invalid Authorization header' });
     return;
   }
 
   const token = header.slice(7);
   try {
-    const decoded = await auth.verifyIdToken(token, true);
+    const decoded = await auth.verifyIdToken(token);
     if (!decoded.phone_number) {
-      res.status(401).json({ error: 'Token does not contain a phone number' });
+      res.status(401).json({ message: 'Token does not contain a phone number' });
       return;
     }
     req.phoneNumber = decoded.phone_number;
     next();
   } catch {
-    res.status(401).json({ error: 'Invalid or expired token' });
+    res.status(401).json({ message: 'Invalid or expired token' });
   }
 }
