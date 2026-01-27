@@ -2,15 +2,21 @@ import { Response } from 'express';
 import { AuthenticatedRequest } from '../middleware/auth.js';
 import { getProfile, upsertProfile, Profile } from '../services/profile.js';
 import { NAME_MAX_LENGTH, EMAIL_MAX_LENGTH, EMAIL_REGEX } from '../constants/validation.js';
+import { createLogger } from '../logger.js';
 
 export async function getProfileHandler(
   req: AuthenticatedRequest,
   res: Response,
 ): Promise<void>{
+  const log = createLogger(req.traceId);
   try {
     const profile = await getProfile(req.phoneNumber!);
     res.status(200).json(profile);
-  } catch {
+  } catch (error) {
+    log.error('Failed to get profile', {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
     res.status(500).json({ message: 'Internal server error' });
   }
 }
@@ -45,6 +51,7 @@ export async function postProfileHandler(
     return;
   }
 
+  const log = createLogger(req.traceId);
   try {
     const profile: Profile = {
       phone: req.phoneNumber!,
@@ -53,7 +60,11 @@ export async function postProfileHandler(
     };
     const saved = await upsertProfile(profile);
     res.status(200).json(saved);
-  } catch {
+  } catch (error) {
+    log.error('Failed to upsert profile', {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
     res.status(500).json({ message: 'Internal server error' });
   }
 }
