@@ -1,0 +1,35 @@
+name: Docker
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t nc-user-profile-api .
+
+      - name: Start container
+        run: |
+          docker run -d --name api -p 3000:3000 \
+            -e PORT=3000 \
+            -e NODE_ENV=test \
+            nc-user-profile-api
+
+      - name: Health check
+        run: curl --retry 10 --retry-delay 2 --retry-all-errors -f http://localhost:3000/health
+
+      - name: GET /profile without auth returns 401
+        run: |
+          status=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/profile)
+          [ "$status" = "401" ] || { echo "Expected 401, got $status"; exit 1; }
+
+      - name: Tear down
+        if: always()
+        run: docker rm -f api

@@ -7,7 +7,10 @@
     "dev": "vite-node src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "vitest run"
+    "test": "vitest run",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -19,6 +22,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "prettier": "^3.8.1",
     "typescript": "^5.5.3",
     "vite": "^5.4.0",
     "vite-node": "^2.1.0",
