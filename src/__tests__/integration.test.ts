@@ -62,10 +62,9 @@ afterAll(async () => {
   ).catch(() => {})
 
   // Clean up Auth accounts
-  await fetch(
-    `http://${AUTH_EMULATOR}/emulator/v1/projects/${PROJECT_ID}/accounts`,
-    { method: 'DELETE' },
-  ).catch(() => {})
+  await fetch(`http://${AUTH_EMULATOR}/emulator/v1/projects/${PROJECT_ID}/accounts`, {
+    method: 'DELETE',
+  }).catch(() => {})
 })
 
 describe('Profile API integration', () => {
