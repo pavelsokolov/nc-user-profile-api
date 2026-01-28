@@ -3,7 +3,6 @@ import cors from 'cors'
 import helmet from 'helmet'
 import { config } from './config.js'
 import { traceIdMiddleware } from './middleware/traceId.js'
-import { requestLogMiddleware } from './middleware/requestLog.js'
 import { errorHandler } from './middleware/errorHandler.js'
 import profileRoutes from './routes/profile.js'
 
@@ -33,7 +32,6 @@ app.use(
 
 app.use(express.json({ limit: config.bodyLimit }))
 app.use(traceIdMiddleware)
-app.use(requestLogMiddleware)
 
 import { Router } from 'express'
 
