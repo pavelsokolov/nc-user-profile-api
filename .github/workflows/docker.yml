@@ -23,11 +23,13 @@ jobs:
             nc-user-profile-api
 
       - name: Health check
-        run: curl --retry 5 --retry-delay 2 --retry-all-errors -f http://localhost:8080/health
+        run: |
+          sleep 5
+          curl --retry 5 --retry-delay 2 --retry-all-errors -f http://localhost:8080/health
 
       - name: GET /profile without auth returns 401
         run: |
-          status=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/profile)
+          status=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/api/profile)
           [ "$status" = "401" ] || { echo "Expected 401, got $status"; exit 1; }
 
       - name: Tear down

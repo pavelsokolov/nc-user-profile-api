@@ -24,6 +24,8 @@ function log(severity: Severity, message: string, data?: Record<string, unknown>
     severity,
     message,
     ...data,
+    service: 'nc-user-profile-api',
+    env: process.env.NODE_ENV,
   }
   console.log(JSON.stringify(entry))
 }

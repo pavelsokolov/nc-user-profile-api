@@ -33,16 +33,17 @@ app.use(
 app.use(express.json({ limit: config.bodyLimit }))
 app.use(traceIdMiddleware)
 
-import { Router } from 'express'
-
-const router = Router()
-
 // Health check
-router.get('/health', (_req, res) => {
+app.get('/health', (_req, res) => {
   res.status(200).json({ status: 'ok' })
 })
 
-app.use(profileRoutes)
+// Create API router
+const apiRouter = express.Router()
+apiRouter.use(profileRoutes)
+app.use('/api', apiRouter)
+
+// Error handling middleware
 app.use(errorHandler)
 
 export default app

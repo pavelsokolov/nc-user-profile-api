@@ -71,7 +71,7 @@ describe('Profile API integration', () => {
   let token: string
 
   it('returns 401 without auth', async () => {
-    const res = await request.get('/profile')
+    const res = await request.get('/api/profile')
     expect(res.status).toBe(401)
   })
 
@@ -81,21 +81,21 @@ describe('Profile API integration', () => {
   })
 
   it('GET /profile returns empty profile for new user', async () => {
-    const res = await request.get('/profile').set('Authorization', `Bearer ${token}`)
+    const res = await request.get('/api/profile').set('Authorization', `Bearer ${token}`)
     expect(res.status).toBe(200)
     expect(res.body).toMatchObject({ phone: TEST_PHONE, name: '', email: '' })
   })
 
   it('POST /profile saves profile data', async () => {
     const res = await request
-      .post('/profile')
+      .post('/api/profile')
       .set('Authorization', `Bearer ${token}`)
       .send({ name: 'Test User', email: 'test@example.com' })
     expect(res.status).toBe(200)
   })
 
   it('GET /profile returns saved data', async () => {
-    const res = await request.get('/profile').set('Authorization', `Bearer ${token}`)
+    const res = await request.get('/api/profile').set('Authorization', `Bearer ${token}`)
     expect(res.status).toBe(200)
     expect(res.body).toMatchObject({
       phone: TEST_PHONE,
@@ -106,7 +106,7 @@ describe('Profile API integration', () => {
 
   it('POST /profile returns 400 for invalid data', async () => {
     const res = await request
-      .post('/profile')
+      .post('/api/profile')
       .set('Authorization', `Bearer ${token}`)
       .send({ name: '', email: 'bad' })
     expect(res.status).toBe(400)
