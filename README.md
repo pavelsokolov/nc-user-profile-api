@@ -2,16 +2,16 @@
 
 REST API for user profile management. Built with Express, TypeScript, and Firebase (Auth + Firestore). Designed for deployment on GCP Cloud Run.
 
-**Related:** frontend repo -- [nc-user-profile-web](https://github.com/pavelsokolov/nc-user-profile-web)
+**Related:** frontend repo — [nc-user-profile-web](https://github.com/pavelsokolov/nc-user-profile-web)
 
 ## Notable dependencies
 
-- **Express 4** -- HTTP framework
-- **Firebase Admin SDK** -- token verification and Firestore access
-- **Zod** -- request body validation
-- **Helmet** -- security headers
-- **vitest + supertest** -- unit and integration testing
-- **ESLint 9 + Prettier** -- linting and formatting
+- **Express 4** — HTTP framework
+- **Firebase Admin SDK** — token verification and Firestore access
+- **Zod** — request body validation
+- **Helmet** — security headers
+- **vitest + supertest** — unit and integration testing
+- **ESLint 9 + Prettier** — linting and formatting
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ REST API for user profile management. Built with Express, TypeScript, and Fireba
 - pnpm
 - Docker (recommended, for Firebase emulators)
 
-## Setup (Docker -- recommended)
+## Setup (Docker — recommended)
 
 Docker Compose starts the API together with Firestore and Auth emulators:
 
@@ -71,9 +71,9 @@ pnpm dev                   # starts dev server with vite-node at http://localhos
 
 See `.env.example` for the full list. Key ones:
 
-- `PORT` -- server port (default `8080`)
-- `FRONTEND_ORIGIN` -- allowed CORS origin, must match the frontend URL exactly (default `http://localhost:5173`)
-- `FIRESTORE_EMULATOR_HOST` / `FIREBASE_AUTH_EMULATOR_HOST` -- point Firebase Admin SDK to local emulators
+- `PORT` — server port (default `8080`)
+- `FRONTEND_ORIGIN` — allowed CORS origin, must match the frontend URL exactly (default `http://localhost:5173`)
+- `FIRESTORE_EMULATOR_HOST` / `FIREBASE_AUTH_EMULATOR_HOST` — point Firebase Admin SDK to local emulators
 
 When running against real Firebase, set the path to your service account JSON as documented in `.env.example`.
 
@@ -81,9 +81,9 @@ When running against real Firebase, set the path to your service account JSON as
 
 All endpoints except `/health` require `Authorization: Bearer <firebase-id-token>`.
 
-- `GET /health` -- health check
-- `GET /api/profile` -- fetch current user's profile (always returns 200)
-- `POST /api/profile` -- create or update profile (body: `name`, `email`)
+- `GET /health` — health check
+- `GET /api/profile` — fetch current user's profile (always returns 200)
+- `POST /api/profile` — create or update profile (body: `name`, `email`)
 
 Status codes: `200` success, `400` validation error, `401` auth error, `500` server error.
 
@@ -112,7 +112,7 @@ src/
 ## Architecture notes
 
 - User identity comes exclusively from the verified Firebase ID token. The phone number from the token is the Firestore document ID (`users` collection).
-- The API is stateless -- no sessions, no server-side state.
+- The API is stateless — no sessions, no server-side state.
 - `POST /api/profile` is an upsert; timestamps (`createdAt`, `updatedAt`) are managed automatically.
 - `GET /api/profile` returns empty `name`/`email` if no profile exists yet (never 404).
 
@@ -120,12 +120,16 @@ src/
 
 GitHub Actions runs three jobs on every push and PR:
 
-1. **Lint** -- ESLint + Prettier check
-2. **Unit tests** -- vitest
-3. **Integration tests** -- vitest with Firebase emulators
+1. **Lint** — ESLint + Prettier check
+2. **Unit tests** — vitest
+3. **Integration tests** — vitest with Firebase emulators
 
 See `.github/workflows/` for the workflow definition.
 
 ## Deployment
 
 Deployed to GCP Cloud Run via automatic continuous deployment from the GitHub repo. Cloud Run builds the container image using the `Dockerfile` in the repo root.
+
+## Firestore data
+<img width="1108" height="604" alt="Screenshot 2026-01-28 at 21 29 05" src="https://github.com/user-attachments/assets/54b0f51a-ee6b-4751-b7ed-0922679b97f1" />
+
