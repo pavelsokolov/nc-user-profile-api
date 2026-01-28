@@ -43,6 +43,11 @@ const apiRouter = express.Router()
 apiRouter.use(profileRoutes)
 app.use('/api', apiRouter)
 
+// 404 for unmatched routes
+app.use((_req, res) => {
+  res.status(404).json({ message: 'Not found' })
+})
+
 // Error handling middleware
 app.use(errorHandler)
 
